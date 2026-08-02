@@ -1,6 +1,6 @@
-# Tinitiate Student Onboarding Installer
+# Tinitiate Basic Student Onboarding Installer
 
-One-command workstation setup and a consistent Docker development environment for new students.
+One-command installation of the basic workstation tools and a matching basic Docker development environment for new students.
 
 <p align="center">&copy; TINITIATE.COM</p>
 
@@ -17,9 +17,12 @@ One-command workstation setup and a consistent Docker development environment fo
 | VS Code extensions | Yes | Yes | Yes |
 | Git | Yes | Yes | Yes |
 | Zoom | Yes | Yes | No |
-| PostgreSQL | Optional via Docker | Optional via Docker | Yes |
 
 Microsoft Teams is intentionally not installed.
+
+## Scope
+
+This repository contains only the basic student installers. It does not install AWS, Azure, Google Cloud, cloud CLIs, cloud SDKs, cloud credentials, or cloud-specific services. Each cloud environment will be defined later in its own Compose YAML file.
 
 ## Option 1: Install the desktop software
 
@@ -53,9 +56,9 @@ chmod +x macos/install.sh
 
 See [macOS installation and verification](macos/README.md).
 
-## Option 2: Start the Docker development workspace
+## Option 2: Start the basic Docker development workspace
 
-Docker Compose provides Python, Node.js, common libraries, VS Code in the browser, and PostgreSQL. Desktop applications still need the host installer above.
+Docker Compose provides Python, Node.js, common libraries, Git, and VS Code in the browser. Desktop applications still need the host installer above.
 
 1. Copy `.env.example` to `.env` and replace the sample passwords.
 2. Start Docker Desktop.
@@ -67,8 +70,6 @@ docker compose up -d --build
 
 4. Open <http://localhost:8080> and sign in using `CODE_SERVER_PASSWORD` from `.env`.
 
-PostgreSQL is available to containers at `postgres:5432`, and to host tools such as DBeaver at `localhost:5432`.
-
 Useful commands:
 
 ```bash
@@ -77,7 +78,7 @@ docker compose logs -f dev
 docker compose down
 ```
 
-Use `docker compose down -v` only when you intentionally want to delete the PostgreSQL and editor data volumes.
+Use `docker compose down -v` only when you intentionally want to delete the editor data volume.
 
 ## Python libraries
 

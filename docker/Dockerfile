@@ -13,7 +13,6 @@ RUN apt-get update \
         git \
         nodejs \
         npm \
-        postgresql-client \
         python3 \
         python3-pip \
         python3-venv \

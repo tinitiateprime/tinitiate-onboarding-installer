@@ -36,7 +36,7 @@ code --version
 Check the Python packages and VS Code extensions:
 
 ```powershell
-python -m pip show pandas numpy requests boto3 psycopg2-binary SQLAlchemy pyspark jupyter pytest python-dotenv
+python -m pip show pandas numpy requests pyspark jupyter pytest python-dotenv
 code --list-extensions
 ```
 

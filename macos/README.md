@@ -34,6 +34,6 @@ git --version
 docker --version
 docker compose version
 code --version
-~/.tinitiate/venv/bin/python -m pip show pandas numpy requests boto3 psycopg2-binary SQLAlchemy pyspark jupyter pytest python-dotenv
+~/.tinitiate/venv/bin/python -m pip show pandas numpy requests pyspark jupyter pytest python-dotenv
 code --list-extensions
 ```
