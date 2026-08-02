@@ -1,0 +1,41 @@
+name: tinitiate-student-dev
+
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    environment:
+      PASSWORD: ${CODE_SERVER_PASSWORD:?Set CODE_SERVER_PASSWORD in .env}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-student}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@postgres:5432/${POSTGRES_DB:-student_dev}
+    ports:
+      - "${CODE_SERVER_PORT:-8080}:8080"
+    volumes:
+      - ./:/home/coder/project
+      - code_server_data:/home/coder/.local/share/code-server
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-student_dev}
+      POSTGRES_USER: ${POSTGRES_USER:-student}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
+
+volumes:
+  code_server_data:
+  postgres_data:

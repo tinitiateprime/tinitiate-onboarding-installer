@@ -1,0 +1,8 @@
+ms-python.python
+detachhead.basedpyright
+ms-toolsai.jupyter
+ms-azuretools.vscode-docker
+eamodio.gitlens
+mtxr.sqltools
+esbenp.prettier-vscode
+dbaeumer.vscode-eslint

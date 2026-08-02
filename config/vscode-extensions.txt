@@ -1,0 +1,8 @@
+ms-python.python
+ms-python.vscode-pylance
+ms-toolsai.jupyter
+ms-azuretools.vscode-docker
+eamodio.gitlens
+mtxr.sqltools
+esbenp.prettier-vscode
+dbaeumer.vscode-eslint

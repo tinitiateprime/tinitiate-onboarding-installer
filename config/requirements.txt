@@ -1,0 +1,10 @@
+pandas
+numpy
+requests
+boto3
+psycopg2-binary
+SQLAlchemy
+pyspark
+jupyter
+pytest
+python-dotenv
