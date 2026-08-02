@@ -18,8 +18,6 @@ One-command installation of the basic workstation tools and a matching basic Doc
 | Git | Yes | Yes | Yes |
 | Zoom | Yes | Yes | No |
 
-Microsoft Teams is intentionally not installed.
-
 ## Scope
 
 This repository contains only the basic student installers. It does not install AWS, Azure, Google Cloud, cloud CLIs, cloud SDKs, cloud credentials, or cloud-specific services. Each cloud environment will be defined later in its own Compose YAML file.
@@ -28,9 +26,19 @@ This repository contains only the basic student installers. It does not install 
 
 ### Windows
 
-Open **PowerShell as Administrator**, change to this repository, and run:
+For a new computer, create `C:\Code` and download the project into that folder. If Git is already installed, run:
 
 ```powershell
+New-Item -ItemType Directory -Path C:\Code -Force
+Set-Location C:\Code
+git clone https://github.com/tinitiateprime/tinitiate-onboarding-installer.git
+Set-Location tinitiate-onboarding-installer
+```
+
+Then open **PowerShell as Administrator** and run:
+
+```powershell
+Set-Location C:\Code\tinitiate-onboarding-installer
 Set-ExecutionPolicy Bypass -Scope Process -Force
 & .\windows\install.ps1
 ```
@@ -43,7 +51,7 @@ To run it directly from GitHub after this repository is published:
 iex (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/tinitiateprime/tinitiate-onboarding-installer/main/windows/install.ps1" -UseBasicParsing).Content
 ```
 
-See [Windows installation and verification](windows/README.md).
+If Git is not installed or you are using Administrator Command Prompt, see the complete [Windows download, installation, and verification instructions](windows/README.md).
 
 ### macOS
 
