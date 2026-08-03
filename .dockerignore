@@ -1,0 +1,10 @@
+.git
+.env
+.venv
+.vscode
+**/__pycache__
+**/.pytest_cache
+**/node_modules
+*.py[cod]
+.DS_Store
+Thumbs.db

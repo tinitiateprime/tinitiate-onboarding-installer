@@ -1,6 +1,6 @@
-# Tinitiate Basic Student Onboarding Installer
+# Tinitiate Student Onboarding Installer
 
-One-command installation of the basic workstation tools and a matching basic Docker development environment for new students.
+One-command installation of the basic workstation tools and separate Docker development environments for new students.
 
 <p align="center">&copy; TINITIATE.COM</p>
 
@@ -18,9 +18,20 @@ One-command installation of the basic workstation tools and a matching basic Doc
 | Git | Yes | Yes | Yes |
 | Zoom | Yes | Yes | No |
 
-## Scope
+## Student Docker choices
 
-This repository contains only the basic student installers. It does not install AWS, Azure, Google Cloud, cloud CLIs, cloud SDKs, cloud credentials, or cloud-specific services. Each cloud environment will be defined later in its own Compose YAML file.
+Students select one Compose file. Every choice provides Python, Node.js, Git, the shared libraries, and browser-based VS Code, plus the tools for that platform.
+
+| Choice | Compose file | Additional tools/services |
+| --- | --- | --- |
+| Basic | `compose.yaml` | Shared development tools only |
+| [AWS](environments/aws/README.md) | `environments/aws/compose.yaml` | AWS CLI v2, boto3, Floci AWS emulator, Floci UI |
+| [Azure](environments/azure/README.md) | `environments/azure/compose.yaml` | Azure CLI, Azure Python SDKs, Floci Azure emulator, Floci UI |
+| [GCP](environments/gcp/README.md) | `environments/gcp/compose.yaml` | Google Cloud CLI, Google Cloud Python SDKs, Floci GCP emulator, Floci UI |
+| [Snowflake](environments/snowflake/README.md) | `environments/snowflake/compose.yaml` | Snowflake CLI, connector, and Snowpark |
+| [Databricks](environments/databricks/README.md) | `environments/databricks/compose.yaml` | Databricks CLI, SDK, SQL connector, and Delta Lake |
+
+The AWS, Azure, and GCP choices default to local Floci endpoints and dummy/local credentials where applicable. Students can learn without a paid cloud account. Snowflake and Databricks connect to real accounts after the student configures authentication; no credentials are stored in this repository.
 
 ## Option 1: Install the desktop software
 
@@ -43,6 +54,8 @@ Set-ExecutionPolicy Bypass -Scope Process -Force
 & .\windows\install.ps1
 ```
 
+Press **Enter after each line**. If using one line, separate the last two commands with a semicolon: `Set-ExecutionPolicy Bypass -Scope Process -Force; & .\windows\install.ps1`.
+
 The script is safe to run again. Restart Windows after it finishes, start Docker Desktop, and rerun the script if an installer requested a reboot.
 
 To run it directly from GitHub after this repository is published:
@@ -64,29 +77,68 @@ chmod +x macos/install.sh
 
 See [macOS installation and verification](macos/README.md).
 
-## Option 2: Start the basic Docker development workspace
+## Option 2: Start a Docker development workspace
 
 Docker Compose provides Python, Node.js, common libraries, Git, and VS Code in the browser. Desktop applications still need the host installer above.
 
 1. Copy `.env.example` to `.env` and replace the sample passwords.
 2. Start Docker Desktop.
-3. Build and start the environment:
+3. Choose one environment and build it from the repository root. For example, start AWS with:
 
 ```bash
-docker compose up -d --build
+docker compose -f environments/aws/compose.yaml up -d --build
 ```
 
-4. Open <http://localhost:8080> and sign in using `CODE_SERVER_PASSWORD` from `.env`.
+Other choices:
+
+```bash
+docker compose -f environments/azure/compose.yaml up -d --build
+docker compose -f environments/gcp/compose.yaml up -d --build
+docker compose -f environments/snowflake/compose.yaml up -d --build
+docker compose -f environments/databricks/compose.yaml up -d --build
+```
+
+Use `docker compose up -d --build` without `-f` for the basic environment.
+
+4. Open <http://localhost:8080> and sign in using `CODE_SERVER_PASSWORD` from `.env`. For AWS, Azure, and GCP, the Floci dashboard is at <http://localhost:4500>.
+
+Only run one student environment at a time unless you assign different ports in `.env`.
 
 Useful commands:
 
 ```bash
-docker compose ps
-docker compose logs -f dev
-docker compose down
+docker compose -f environments/aws/compose.yaml ps
+docker compose -f environments/aws/compose.yaml logs -f dev
+docker compose -f environments/aws/compose.yaml down
 ```
 
-Use `docker compose down -v` only when you intentionally want to delete the editor data volume.
+Replace `aws` with the selected environment. Use `docker compose -f environments/aws/compose.yaml down -v` only when you intentionally want to delete that environment's editor, CLI configuration, and emulator data volumes.
+
+### Verify the selected tools
+
+Open the code-server terminal and run the matching commands:
+
+```bash
+# AWS
+aws --version
+aws s3 ls
+
+# Azure
+az version
+az storage container list --connection-string "$AZURE_STORAGE_CONNECTION_STRING"
+
+# GCP
+gcloud version
+gcloud storage buckets list
+
+# Snowflake
+snow --version
+
+# Databricks
+databricks version
+```
+
+The cloud-specific Compose files intentionally mount the Docker socket into Floci. Floci needs it to create local containers for services such as functions and databases. Only use these teaching environments with trusted images and code.
 
 ## Python libraries
 

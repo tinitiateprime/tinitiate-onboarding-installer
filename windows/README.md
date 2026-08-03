@@ -57,6 +57,14 @@ Set-ExecutionPolicy Bypass -Scope Process -Force
 & .\windows\install.ps1
 ```
 
+Press **Enter after each line**. Do not place `&` between `Set-ExecutionPolicy` and the installer command.
+
+To run the last two commands on one line, separate them with a semicolon:
+
+```powershell
+Set-ExecutionPolicy Bypass -Scope Process -Force; & .\windows\install.ps1
+```
+
 PowerShell prompts start with `PS`, such as `PS C:\Code>`.
 
 The installer configures Chocolatey, Docker Desktop, Notepad++, Visual Studio Code, DBeaver Community, Python, Python libraries, Node.js, npm, Git, Zoom, and the standard VS Code extensions. Microsoft Teams is not included.
