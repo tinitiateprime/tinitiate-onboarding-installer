@@ -95,7 +95,7 @@ See [macOS installation and verification](macos/README.md).
 
 Docker Compose provides Python, Node.js, common libraries, Git, and VS Code in the browser. Desktop applications still need the host installer above.
 
-1. Copy `.env.example` to `.env` and replace the sample passwords.
+1. For code-server environments, copy `.env.example` to `.env` and replace `CODE_SERVER_PASSWORD`. The on-premises database-only YAML has classroom defaults and does not require `.env`.
 2. Start Docker Desktop.
 3. Choose one environment and build it from the repository root. For example, start AWS with:
 

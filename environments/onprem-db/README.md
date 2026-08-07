@@ -10,7 +10,7 @@ This Compose project starts the three databases used in the Tinitiate Windows da
 | PostgreSQL with pgvector | `pgvector/pgvector:pg16` | `localhost` | 5432 | `tinitiate` / `tinitiate` |
 | MySQL LTS | `mysql:8.4` | `localhost` | 3306 | `tinitiate` / `tinitiate` |
 
-The PostgreSQL initialization script enables the `vector` extension automatically the first time its data volume is created.
+An initialization script embedded in the Compose YAML enables the `vector` extension automatically the first time the PostgreSQL data volume is created.
 
 ## Why this is separate from basic Compose
 
@@ -19,11 +19,11 @@ The repository-root `compose.yaml` contains only the browser development workspa
 ## Before starting
 
 1. Install and start Docker Desktop.
-2. Copy `.env.example` to `.env` in the repository root.
-3. Replace every database password beginning with `change-me`.
-4. Give Docker Desktop at least 6 GB of memory when running all three databases together. SQL Server is the largest service.
+2. Give Docker Desktop at least 6 GB of memory when running all three databases together. SQL Server is the largest service.
 
-SQL Server requires a strong `MSSQL_SA_PASSWORD` containing uppercase and lowercase letters, a number, and a symbol.
+No `.env` file is required. The YAML includes the classroom password `Tinitiate!23456` for all three databases. These credentials are intended only for local student machines and must never be used for production or internet-accessible databases.
+
+Instructors can optionally override passwords, ports, database names, users, and timezone through a `.env` file. SQL Server password overrides must contain uppercase and lowercase letters, a number, and a symbol.
 
 ## Start
 
@@ -50,7 +50,7 @@ All three services should eventually show `healthy`. SQL Server normally takes l
 - Port: value of `MSSQL_PORT`, default `1433`
 - Database: `master`
 - User: `sa`
-- Password: `MSSQL_SA_PASSWORD` from `.env`
+- Password: `Tinitiate!23456`, unless overridden by `MSSQL_SA_PASSWORD`
 - If prompted for encryption settings in a local class environment, enable **Trust server certificate**.
 
 ### PostgreSQL
@@ -60,7 +60,7 @@ All three services should eventually show `healthy`. SQL Server normally takes l
 - Port: value of `POSTGRES_PORT`, default `5432`
 - Database: `POSTGRES_DB`, default `tinitiate`
 - User: `POSTGRES_USER`, default `tinitiate`
-- Password: `POSTGRES_PASSWORD` from `.env`
+- Password: `Tinitiate!23456`, unless overridden by `POSTGRES_PASSWORD`
 
 Verify pgvector after connecting:
 
@@ -77,7 +77,7 @@ WHERE extname = 'vector';
 - Port: value of `MYSQL_PORT`, default `3306`
 - Database: `MYSQL_DATABASE`, default `tinitiate`
 - User: `MYSQL_USER`, default `tinitiate`
-- Password: `MYSQL_PASSWORD` from `.env`
+- Password: `Tinitiate!23456`, unless overridden by `MYSQL_PASSWORD`
 
 ## Run only selected databases
 
@@ -119,4 +119,3 @@ docker compose -f environments/onprem-db/compose.yaml down
 - [Tinitiate SQL Server installer guide](https://github.com/tinitiateprime/tinitiate-onboarding/blob/main/software-installers/windows/database-installers/ms-sql-server/README.md)
 - [Tinitiate PostgreSQL installer guide](https://github.com/tinitiateprime/tinitiate-onboarding/blob/main/software-installers/windows/database-installers/postgresql/README.md)
 - [Tinitiate MySQL installer guide](https://github.com/tinitiateprime/tinitiate-onboarding/blob/main/software-installers/windows/database-installers/mysql/README.md)
-
