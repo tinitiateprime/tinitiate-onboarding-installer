@@ -9,6 +9,7 @@ Each directory contains an independent Docker Compose choice. Run commands from 
 | [GCP](gcp/README.md) | Google Cloud CLI and Google Cloud Python SDKs | Floci GCP on port 4588 |
 | [Snowflake](snowflake/README.md) | Snowflake CLI, connector, and Snowpark | None |
 | [Databricks](databricks/README.md) | Databricks CLI, SDK, SQL connector, and Delta Lake | None |
+| [On-premises databases](onprem-db/README.md) | SQL Server, PostgreSQL with pgvector, and MySQL | Local database servers |
 
 The three Floci environments also expose the Floci UI on port 4500. The workspace editor is on port 8080 by default. Override ports in the root `.env` file when required.
 
@@ -24,6 +25,6 @@ Stop the same choice without deleting its saved configuration:
 docker compose -f environments/aws/compose.yaml down
 ```
 
-Replace `aws` with `azure`, `gcp`, `snowflake`, or `databricks`.
+Replace `aws` with `azure`, `gcp`, `snowflake`, `databricks`, or `onprem-db`.
 
 Do not put access tokens or passwords in a Compose file. Configure real Snowflake or Databricks credentials from the workspace terminal; their configuration directories are stored in environment-specific Docker volumes and ignored by Git.

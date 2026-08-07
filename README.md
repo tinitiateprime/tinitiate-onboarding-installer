@@ -30,8 +30,22 @@ Students select one Compose file. Every choice provides Python, Node.js, Git, th
 | [GCP](environments/gcp/README.md) | `environments/gcp/compose.yaml` | Google Cloud CLI, Google Cloud Python SDKs, Floci GCP emulator, Floci UI |
 | [Snowflake](environments/snowflake/README.md) | `environments/snowflake/compose.yaml` | Snowflake CLI, connector, and Snowpark |
 | [Databricks](environments/databricks/README.md) | `environments/databricks/compose.yaml` | Databricks CLI, SDK, SQL connector, and Delta Lake |
+| [On-premises databases](environments/onprem-db/README.md) | `environments/onprem-db/compose.yaml` | SQL Server, PostgreSQL with pgvector, and MySQL |
 
 The AWS, Azure, and GCP choices default to local Floci endpoints and dummy/local credentials where applicable. Students can learn without a paid cloud account. Snowflake and Databricks connect to real accounts after the student configures authentication; no credentials are stored in this repository.
+
+### What is in the basic `compose.yaml`?
+
+The basic Compose file creates one `dev` service. It:
+
+- Builds [docker/Dockerfile](docker/Dockerfile), based on browser-hosted code-server.
+- Includes Python, the shared Python libraries, Node.js, npm, Git, and editor extensions.
+- Publishes code-server at <http://localhost:8080> by default.
+- Mounts this repository at `/home/coder/project`, so edits remain on the host.
+- Stores code-server application data in the `code_server_data` Docker volume.
+- Requires `CODE_SERVER_PASSWORD` from `.env` and restarts unless stopped.
+
+It does not start SQL Server, PostgreSQL, MySQL, Floci, or any other server. Use the on-premises database Compose file when database servers are needed.
 
 ## Option 1: Install the desktop software
 
@@ -96,6 +110,7 @@ docker compose -f environments/azure/compose.yaml up -d --build
 docker compose -f environments/gcp/compose.yaml up -d --build
 docker compose -f environments/snowflake/compose.yaml up -d --build
 docker compose -f environments/databricks/compose.yaml up -d --build
+docker compose -f environments/onprem-db/compose.yaml up -d
 ```
 
 Use `docker compose up -d --build` without `-f` for the basic environment.
