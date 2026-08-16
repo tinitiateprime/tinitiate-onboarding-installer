@@ -6,7 +6,7 @@ services:
       context: ../..
       dockerfile: docker/azure/Dockerfile
     environment:
-      PASSWORD: ${CODE_SERVER_PASSWORD:?Set CODE_SERVER_PASSWORD in .env}
+      PASSWORD: ${CODE_SERVER_PASSWORD:-Tinitiate!23456}
       AZURE_CONFIG_DIR: /home/coder/.azure
       AZURE_STORAGE_CONNECTION_STRING: >-
         DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=${FLOCI_AZURE_ACCOUNT_KEY:-bG9jYWwtZmxvY2ktc3R1ZGVudC1rZXk=};BlobEndpoint=http://floci-azure:4577/devstoreaccount1;QueueEndpoint=http://floci-azure:4577/devstoreaccount1-queue;TableEndpoint=http://floci-azure:4577/devstoreaccount1-table;

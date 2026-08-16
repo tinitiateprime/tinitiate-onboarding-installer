@@ -9,6 +9,7 @@ This environment provides Databricks command-line, Python, SQL, Spark, and Delta
 - **Databricks SDK for Python:** Automates Databricks APIs from Python.
 - **Databricks SQL Connector:** Connects Python applications to SQL warehouses.
 - **Delta Lake and PySpark:** Supports local Spark and Delta exercises.
+- **AWS and Azure Floci:** Local database and data-lake service endpoints for integration exercises.
 - **Shared student tools:** Python, Jupyter, Node.js, npm, Git, and the standard editor extensions.
 
 ## Important points
@@ -19,6 +20,7 @@ This environment provides Databricks command-line, Python, SQL, Spark, and Delta
 - The project repository is mounted at `/home/coder/project`.
 - Never commit access tokens or the Databricks configuration file to Git.
 - Delta Lake can be used for some local Spark exercises without connecting to a remote workspace.
+- Local AWS and Azure data are persisted in environment-specific Docker volumes.
 
 ## Start
 
@@ -28,7 +30,7 @@ Run from the repository root:
 docker compose -f environments/databricks/compose.yaml up -d --build
 ```
 
-Open <http://localhost:8080> and sign in with `CODE_SERVER_PASSWORD` from `.env`.
+Open <http://localhost:8080> and sign in with the classroom password `Tinitiate!23456`. An instructor can optionally override it with `CODE_SERVER_PASSWORD` in `.env`.
 
 ## Configure and verify
 

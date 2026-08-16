@@ -18,21 +18,33 @@ One-command installation of the basic workstation tools and separate Docker deve
 | Git | Yes | Yes | Yes |
 | Zoom | Yes | Yes | No |
 
-## Student Docker choices
+## Onboarding process
+
+### 1. Local setup
+
+The Windows and macOS installers prepare the host with VS Code, Python, DBeaver, Docker, Python libraries, and VS Code extensions. Notepad++ is also installed on Windows.
+
+### 2. Docker appliance setup
 
 Students select one Compose file. Every choice provides Python, Node.js, Git, the shared libraries, and browser-based VS Code, plus the tools for that platform.
 
-| Choice | Compose file | Additional tools/services |
-| --- | --- | --- |
-| Basic | `compose.yaml` | Shared development tools only |
-| [AWS](environments/aws/README.md) | `environments/aws/compose.yaml` | AWS CLI v2, boto3, Floci AWS emulator, Floci UI |
-| [Azure](environments/azure/README.md) | `environments/azure/compose.yaml` | Azure CLI, Azure Python SDKs, Floci Azure emulator, Floci UI |
-| [GCP](environments/gcp/README.md) | `environments/gcp/compose.yaml` | Google Cloud CLI, Google Cloud Python SDKs, Floci GCP emulator, Floci UI |
-| [Snowflake](environments/snowflake/README.md) | `environments/snowflake/compose.yaml` | Snowflake CLI, connector, and Snowpark |
-| [Databricks](environments/databricks/README.md) | `environments/databricks/compose.yaml` | Databricks CLI, SDK, SQL connector, and Delta Lake |
-| [On-premises databases](environments/onprem-db/README.md) | `environments/onprem-db/compose.yaml` | SQL Server, PostgreSQL with pgvector, and MySQL |
+| Choice | Compose file | Local appliance | Cloud account |
+| --- | --- | --- | --- |
+| Basic | `compose.yaml` | Shared development tools only | Not needed |
+| [AWS](environments/aws/README.md) | `environments/aws/compose.yaml` | AWS CLI, boto3, and Floci DB/data-lake/services | Optional for real AWS |
+| [Azure](environments/azure/README.md) | `environments/azure/compose.yaml` | Azure CLI, SDKs, and Floci DB/data-lake/services | Optional for real Azure |
+| [GCP](environments/gcp/README.md) | `environments/gcp/compose.yaml` | Google Cloud CLI, SDKs, and Floci DB/data-lake/services | Optional for real GCP |
+| [Snowflake](environments/snowflake/README.md) | `environments/snowflake/compose.yaml` | Snowflake client workspace | Required for queries |
+| [Oracle Developer](environments/oracle-developer/README.md) | `environments/oracle-developer/compose.yaml` | Oracle Database Free and Python Oracle tools | Not needed |
+| [AI - AWS](environments/ai-aws/README.md) | `environments/ai-aws/compose.yaml` | Bedrock SDK, CrewAI, LangGraph, PostgreSQL/pgvector, and MinIO | Required for Bedrock |
+| [AI - Azure](environments/ai-azure/README.md) | `environments/ai-azure/compose.yaml` | Foundry SDK, CrewAI, LangGraph, PostgreSQL/pgvector, and MinIO | Required for Foundry |
+| [AI - Claude](environments/ai-claude/README.md) | `environments/ai-claude/compose.yaml` | Anthropic SDK, CrewAI, LangGraph, PostgreSQL/pgvector, and MinIO | API key required for Claude |
+| [AI - Custom](environments/ai-custom/README.md) | `environments/ai-custom/compose.yaml` | OpenAI-compatible SDK, CrewAI, LangGraph, PostgreSQL/pgvector, and MinIO | Depends on model provider |
+| [Databricks](environments/databricks/README.md) | `environments/databricks/compose.yaml` | Databricks tools plus AWS and Azure Floci data lakes | Required for remote workspace operations |
+| [dbt](environments/dbt/README.md) | `environments/dbt/compose.yaml` | dbt, PostgreSQL, and AWS/Azure Floci data lakes | Depends on selected target |
+| [On-premises databases](environments/onprem-db/README.md) | `environments/onprem-db/compose.yaml` | SQL Server, PostgreSQL with pgvector, and MySQL | Not needed |
 
-The AWS, Azure, and GCP choices default to local Floci endpoints and dummy/local credentials where applicable. Students can learn without a paid cloud account. Snowflake and Databricks connect to real accounts after the student configures authentication; no credentials are stored in this repository.
+The AWS, Azure, and GCP choices default to local Floci endpoints and dummy/local credentials where applicable. Students can learn without a paid cloud account. Snowflake and Databricks connect to real accounts after the student configures authentication; no credentials are stored in this repository. Snowflake does not provide a supported local server, so “local Snowflake” here means a local client workspace connected to Snowflake Cloud.
 
 ### What is in the basic `compose.yaml`?
 
@@ -43,7 +55,7 @@ The basic Compose file creates one `dev` service. It:
 - Publishes code-server at <http://localhost:8080> by default.
 - Mounts this repository at `/home/coder/project`, so edits remain on the host.
 - Stores code-server application data in the `code_server_data` Docker volume.
-- Requires `CODE_SERVER_PASSWORD` from `.env` and restarts unless stopped.
+- Uses the classroom password `Tinitiate!23456` by default and restarts unless stopped.
 
 It does not start SQL Server, PostgreSQL, MySQL, Floci, or any other server. Use the on-premises database Compose file when database servers are needed.
 
@@ -95,9 +107,8 @@ See [macOS installation and verification](macos/README.md).
 
 Docker Compose provides Python, Node.js, common libraries, Git, and VS Code in the browser. Desktop applications still need the host installer above.
 
-1. For code-server environments, copy `.env.example` to `.env` and replace `CODE_SERVER_PASSWORD`. The on-premises database-only YAML has classroom defaults and does not require `.env`.
-2. Start Docker Desktop.
-3. Choose one environment and build it from the repository root. For example, start AWS with:
+1. Start Docker Desktop. No `.env` file is required for the classroom defaults.
+2. Choose one environment and build it from the repository root. For example, start AWS with:
 
 ```bash
 docker compose -f environments/aws/compose.yaml up -d --build
@@ -109,13 +120,21 @@ Other choices:
 docker compose -f environments/azure/compose.yaml up -d --build
 docker compose -f environments/gcp/compose.yaml up -d --build
 docker compose -f environments/snowflake/compose.yaml up -d --build
+docker compose -f environments/oracle-developer/compose.yaml up -d --build
+docker compose -f environments/ai-aws/compose.yaml up -d --build
+docker compose -f environments/ai-azure/compose.yaml up -d --build
+docker compose -f environments/ai-claude/compose.yaml up -d --build
+docker compose -f environments/ai-custom/compose.yaml up -d --build
 docker compose -f environments/databricks/compose.yaml up -d --build
+docker compose -f environments/dbt/compose.yaml up -d --build
 docker compose -f environments/onprem-db/compose.yaml up -d
 ```
 
 Use `docker compose up -d --build` without `-f` for the basic environment.
 
-4. Open <http://localhost:8080> and sign in using `CODE_SERVER_PASSWORD` from `.env`. For AWS, Azure, and GCP, the Floci dashboard is at <http://localhost:4500>.
+3. Open <http://localhost:8080> and sign in with `Tinitiate!23456`. For AWS, Azure, and GCP, the Floci dashboard is at <http://localhost:4500>. AI appliances also expose MinIO at <http://localhost:9001>.
+
+The classroom password is intended only for local student machines. Instructors can optionally copy `.env.example` to `.env` to override passwords, ports, regions, project IDs, and database settings.
 
 Only run one student environment at a time unless you assign different ports in `.env`.
 
@@ -151,6 +170,15 @@ snow --version
 
 # Databricks
 databricks version
+
+# Oracle Developer
+python -c "import oracledb; print(oracledb.connect(user='tinitiate', password='Tinitiate!23456', dsn='oracle:1521/FREEPDB1').version)"
+
+# AI appliances
+python -c "import crewai, langgraph, psycopg, minio; print('AI stack ready')"
+
+# dbt
+dbt --version
 ```
 
 The cloud-specific Compose files intentionally mount the Docker socket into Floci. Floci needs it to create local containers for services such as functions and databases. Only use these teaching environments with trusted images and code.

@@ -27,7 +27,7 @@ Run from the repository root:
 docker compose -f environments/snowflake/compose.yaml up -d --build
 ```
 
-Open <http://localhost:8080> and sign in with `CODE_SERVER_PASSWORD` from `.env`.
+Open <http://localhost:8080> and sign in with the classroom password `Tinitiate!23456`. An instructor can optionally override it with `CODE_SERVER_PASSWORD` in `.env`.
 
 ## Configure and verify
 

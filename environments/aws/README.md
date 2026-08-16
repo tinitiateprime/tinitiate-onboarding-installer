@@ -34,7 +34,7 @@ Open:
 - Floci UI: <http://localhost:4500>
 - Floci API: <http://localhost:4566>
 
-Sign in to the workspace with `CODE_SERVER_PASSWORD` from the root `.env` file.
+Sign in with the classroom password `Tinitiate!23456`. An instructor can optionally override it with `CODE_SERVER_PASSWORD` in `.env`.
 
 ## Verify and try S3
 

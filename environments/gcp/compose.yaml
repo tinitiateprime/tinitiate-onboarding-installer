@@ -6,7 +6,7 @@ services:
       context: ../..
       dockerfile: docker/gcp/Dockerfile
     environment:
-      PASSWORD: ${CODE_SERVER_PASSWORD:?Set CODE_SERVER_PASSWORD in .env}
+      PASSWORD: ${CODE_SERVER_PASSWORD:-Tinitiate!23456}
       CLOUDSDK_CONFIG: /home/coder/.config/gcloud
       CLOUDSDK_CORE_PROJECT: ${GCP_PROJECT_ID:-floci-local}
       CLOUDSDK_API_ENDPOINT_OVERRIDES_STORAGE: http://floci-gcp:4588/

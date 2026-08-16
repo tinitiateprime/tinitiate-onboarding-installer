@@ -6,7 +6,7 @@ services:
       context: ../..
       dockerfile: docker/aws/Dockerfile
     environment:
-      PASSWORD: ${CODE_SERVER_PASSWORD:?Set CODE_SERVER_PASSWORD in .env}
+      PASSWORD: ${CODE_SERVER_PASSWORD:-Tinitiate!23456}
       AWS_ACCESS_KEY_ID: test
       AWS_SECRET_ACCESS_KEY: test
       AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION:-us-east-1}
