@@ -47,6 +47,18 @@ cd /d C:\Code\tinitiate-onboarding-installer
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\windows\install.ps1"
 ```
 
+The first command opens the installer folder:
+
+![Change to the installer folder in Command Prompt](../images/setexecution-force.png)
+
+The second command starts the installer:
+
+![Run the Windows installer from Command Prompt](../images/windows_install.png)
+
+Wait while the installer downloads and installs the software:
+
+![Windows installer installing Docker Desktop through Chocolatey](../images/windows_install_1.png)
+
 Do not enter `Set-ExecutionPolicy` directly in Command Prompt. It is a PowerShell command.
 
 ## Install from Administrator PowerShell
@@ -61,6 +73,8 @@ Set-ExecutionPolicy Bypass -Scope Process -Force
 & .\windows\install.ps1
 ```
 
+![Set the installer folder in PowerShell](../images/setlocation.png)
+
 Press **Enter after each line**. Do not place `&` between `Set-ExecutionPolicy` and the installer command.
 
 To run the last two commands on one line, separate them with a semicolon:
@@ -74,6 +88,12 @@ PowerShell prompts start with `PS`, such as `PS C:\Code>`.
 The installer configures Chocolatey, Docker Desktop, Notepad++, Visual Studio Code, DBeaver Community, Python, Python libraries, Node.js, npm, Git, Zoom, and the standard VS Code extensions. Microsoft Teams is not included.
 
 Restart Windows when the installer finishes. Open Docker Desktop once and complete any WSL 2 or license prompts it displays.
+
+![Windows installer reports that installation is complete](../images/installation%20complete.png)
+
+Docker Desktop may show an empty container list before you start a course environment:
+
+![Docker Desktop before starting a course environment](../images/Docker.png)
 
 ## Verify
 

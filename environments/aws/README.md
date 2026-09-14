@@ -30,13 +30,33 @@ Run from the repository root:
 docker compose -f environments/aws/compose.yaml up -d --build
 ```
 
+![Run the AWS environment command in PowerShell](../../images/Aws_installer.png)
+
+Wait for the build to finish and the containers to start:
+
+![AWS image built and containers started](../../images/Aws_installer_complete.png)
+
 Open:
 
 - Workspace: <http://localhost:8080>
 - Floci UI: <http://localhost:4500>
 - Floci API: <http://localhost:4566>
 
+Select the **Workspace** link to open the browser editor:
+
+![AWS instructions highlighting the workspace link](../../images/aws%20workspace.png)
+
 Sign in with the classroom password `Tinitiate!23456`. An instructor can optionally override it with `CODE_SERVER_PASSWORD` in `.env`.
+
+![Classroom password shown in the instructions](../../images/aws%20password.png)
+
+Enter the password on the code-server page and select **SUBMIT**:
+
+![Enter the classroom password on the code-server sign-in page](../../images/aws%20password_enter.png)
+
+The VS Code workspace opens with the project files in Explorer:
+
+![VS Code workspace after sign-in](../../images/Floci%20Login.png)
 
 ## Verify and try S3
 

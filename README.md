@@ -43,11 +43,42 @@ Set-Location C:\Code\tinitiate-onboarding-installer
 Set-ExecutionPolicy Bypass -Scope Process -Force & .\windows\install.ps1
 ```
 
+The first command opens the installer folder:
+
+![Set the installer folder in PowerShell](images/setlocation.png)
+
 This installs the base software on Windows, including Docker Desktop. No `docker compose` command is needed to complete the base software installation. After the restart and Docker Desktop setup, start a course environment only when you need it.
 
 Wait for the installation to finish, then restart Windows. If any software failed to install or a restart interrupted installation, run the installer again after restarting.
 
-For help checking the installed software, see the [Windows guide](windows/README.md#verify).
+![Windows installer reports that installation is complete](images/installation%20complete.png)
+
+##### Verify
+
+Open a new **PowerShell** window. Run each command below and check that it prints a version number:
+
+```powershell
+choco --version
+python --version
+python -m pip --version
+node --version
+npm --version
+git --version
+docker --version
+docker compose version
+code --version
+```
+
+Check the Python packages and VS Code extensions:
+
+```powershell
+python -m pip show pandas numpy requests pyspark jupyter pytest python-dotenv
+code --list-extensions
+```
+
+The first command should show details for each Python package; the second should list the installed VS Code extensions.
+
+If a command is unavailable, close and reopen PowerShell, then try again. If it still fails, run the Windows installer again. See the [Windows guide](windows/README.md#verify) for the same verification steps.
 
 #### macOS
 
@@ -93,11 +124,18 @@ The AWS, Azure, and GCP choices default to local Floci endpoints and dummy/local
 Complete Step 1 first. Run the commands below in **PowerShell on Windows** or **Terminal on macOS**, from the downloaded project folder containing `compose.yaml`. Use the same folder you used for installation. Do not paste Docker commands into Python or the browser address bar.
 
 1. Start Docker Desktop and wait until its engine is running. Run `docker version` (look for both Client and Server information), then `docker compose version`. Resolve any errors before continuing. No `.env` file is required for the classroom defaults.
+
+   Docker Desktop may show an empty container list before you start your first environment:
+
+   ![Docker Desktop before starting a course environment](images/Docker.png)
+
 2. Run **only the command for your selected environment**. For example, start AWS with:
 
 ```bash
 docker compose -f environments/aws/compose.yaml up -d --build
 ```
+
+![Run the AWS environment command in PowerShell](images/Aws_installer.png)
 
 For another course, copy only its command below:
 
@@ -168,7 +206,20 @@ docker compose -f environments/onprem-db/compose.yaml up -d
 ```
 
 3. Wait for the download/build to finish and the terminal prompt to return. The first run can take several minutes. Check status using the same Compose file, for example `docker compose -f environments/aws/compose.yaml ps`. Services should be running; wait for databases to become healthy. If the command reports an error, see [student troubleshooting](docs/STUDENT-GUIDE.md#troubleshooting).
+
+   Example AWS startup output:
+
+   ![AWS image built and containers started](images/Aws_installer_complete.png)
+
 4. Open <http://localhost:8080> and sign in with `Tinitiate!23456`. For AWS, Azure, and GCP, the Floci dashboard is at <http://localhost:4500>. AI appliances also expose MinIO at <http://localhost:9001>. **On-premises databases has no browser workspace**: open DBeaver and follow its [connection instructions](environments/onprem-db/README.md).
+
+   Enter the classroom password and select **SUBMIT**:
+
+   ![Enter the classroom password on the code-server sign-in page](images/aws%20password_enter.png)
+
+   After sign-in, the VS Code workspace opens:
+
+   ![VS Code workspace with the project files in Explorer](images/Floci%20Login.png)
 
 The classroom password is intended only for local student machines. Instructors can optionally copy `.env.example` to `.env` to override passwords, ports, regions, project IDs, and database settings.
 
