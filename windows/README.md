@@ -2,6 +2,10 @@
 
 <p align="center">&copy; TINITIATE.COM</p>
 
+> If PowerShell, folders, or Docker are new to you, follow the illustrated [student guide](../docs/STUDENT-GUIDE.md) from the beginning.
+
+![Open PowerShell, open the project folder, and run the command](../docs/images/01-open-powershell-and-run-command.png)
+
 ## Download the installer to `C:\Code`
 
 ### Method 1: Download the ZIP file

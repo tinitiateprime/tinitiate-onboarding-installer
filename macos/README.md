@@ -2,6 +2,8 @@
 
 <p align="center">&copy; TINITIATE.COM</p>
 
+> If Terminal, folders, or Docker are new to you, follow the illustrated [student guide](../docs/STUDENT-GUIDE.md) from the beginning.
+
 ## Install
 
 From Terminal, change to this repository and run:

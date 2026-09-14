@@ -1,36 +1,79 @@
 # Tinitiate Student Onboarding Installer
 
-One-command installation of the basic workstation tools and separate Docker development environments for new students.
+Set up your computer in two steps: **1. Install the base software. 2. Start one Docker environment for your course.**
+
+> **New student? Start with the illustrated [step-by-step student guide](docs/STUDENT-GUIDE.md).** It explains which application to open, where to paste every command, what successful output looks like, and how to stop the appliance safely.
 
 <p align="center">&copy; TINITIATE.COM</p>
 
-## What is included
+## Step 1: install the base software
 
-| Tool | Windows host | macOS host | Docker workspace |
-| --- | :---: | :---: | :---: |
-| Docker Desktop | Yes | Yes | Required on host |
-| Notepad++ | Yes | No (Windows only) | No |
-| Visual Studio Code | Yes | Yes | Browser-based code-server |
-| DBeaver Community | Yes | Yes | No |
-| Python and libraries | Yes | Yes | Yes |
-| Node.js and npm | Yes | Yes | Yes |
-| VS Code extensions | Yes | Yes | Yes |
-| Git | Yes | Yes | Yes |
-| Zoom | Yes | Yes | No |
+Run the installer for your computer once. It installs the following software and the configured Python libraries and VS Code extensions automatically. You do not need to install Python, Node.js, Git, Chocolatey, or Homebrew first; the installer sets them up.
 
-## Onboarding process
+You need an internet connection, permission to install applications, and a computer that can run Docker Desktop. Complete any Docker virtualization/WSL setup prompts and requested restarts before Step 2. Downloads and builds require internet access; hosted cloud exercises also need the accounts listed below.
 
-### 1. Local setup
+| Software installed on your computer | Windows | macOS |
+| --- | :---: | :---: |
+| Docker Desktop | Yes | Yes |
+| Notepad++ | Yes | Windows only |
+| Visual Studio Code | Yes | Yes |
+| DBeaver Community | Yes | Yes |
+| Python and libraries | Yes | Yes |
+| Node.js and npm | Yes | Yes |
+| VS Code extensions | Yes | Yes |
+| Git | Yes | Yes |
+| Zoom | Yes | Yes |
 
-The Windows and macOS installers prepare the host with VS Code, Python, DBeaver, Docker, Python libraries, and VS Code extensions. Notepad++ is also installed on Windows.
+Follow the Windows or macOS instructions below. **Finish Step 1 before starting Step 2.**
 
-### 2. Docker appliance setup
+### Run the installer for your computer
 
-Students select one Compose file. Every choice provides Python, Node.js, Git, the shared libraries, and browser-based VS Code, plus the tools for that platform.
+#### Windows
 
-| Choice | Compose file | Local appliance | Cloud account |
+On a new computer, **Git is not required to download the installer**:
+
+1. Open the [project page](https://github.com/tinitiateprime/tinitiate-onboarding-installer) in your browser and select **Code > Download ZIP**.
+2. Create `C:\Code` in File Explorer and extract the ZIP there.
+3. Rename the extracted folder to `tinitiate-onboarding-installer`. Confirm it contains `windows\install.ps1`.
+
+Open the **Start** menu, type **PowerShell**, right-click **Windows PowerShell**, and select **Run as administrator**. Select **Yes** if Windows asks for permission. Paste each line below and press **Enter** after each line:
+
+```powershell
+Set-Location C:\Code\tinitiate-onboarding-installer
+Set-ExecutionPolicy Bypass -Scope Process -Force
+& .\windows\install.ps1
+```
+
+This installs the base software on Windows, including Docker Desktop. No `docker compose` command is needed to complete the base software installation. After the restart and Docker Desktop setup, start a course environment only when you need it.
+
+Wait for the installation to finish, then restart Windows. If any software failed to install or a restart interrupted installation, run the installer again after restarting.
+
+For help checking the installed software, see the [Windows guide](windows/README.md#verify).
+
+#### macOS
+
+1. Open the [project page](https://github.com/tinitiateprime/tinitiate-onboarding-installer) and select **Code > Download ZIP**. No Git installation is needed.
+2. Double-click the ZIP in Finder to extract it.
+3. Open **Applications > Utilities > Terminal**. Type `cd ` (including the space), drag the extracted project folder into Terminal, and press **Enter**.
+4. Run these commands one line at a time:
+
+```bash
+chmod +x macos/install.sh
+./macos/install.sh
+```
+
+See [macOS installation and verification](macos/README.md).
+
+## Step 2: choose one Docker course environment
+
+Your instructor will tell you which course environment to use. A **course environment** is a ready-made set of tools and databases for your class. Docker Desktop runs it on your computer. If your instructor has not assigned an environment yet, stop after Step 1.
+
+Start only your assigned environment. Docker sets up its included software automatically. You do not need to install the course databases or extra programming tools separately.
+
+All choices except **On-premises databases** provide Python, Node.js, npm, Git, the shared libraries, extensions, and browser-based VS Code. On-premises databases starts database servers only; connect using the DBeaver installed in Step 1.
+
+| Your course | Setup file used by Docker | Included course tools | Do you need a cloud account? |
 | --- | --- | --- | --- |
-| Basic | `compose.yaml` | Shared development tools only | Not needed |
 | [AWS](environments/aws/README.md) | `environments/aws/compose.yaml` | AWS CLI, boto3, and Floci DB/data-lake/services | Optional for real AWS |
 | [Azure](environments/azure/README.md) | `environments/azure/compose.yaml` | Azure CLI, SDKs, and Floci DB/data-lake/services | Optional for real Azure |
 | [GCP](environments/gcp/README.md) | `environments/gcp/compose.yaml` | Google Cloud CLI, SDKs, and Floci DB/data-lake/services | Optional for real GCP |
@@ -46,97 +89,91 @@ Students select one Compose file. Every choice provides Python, Node.js, Git, th
 
 The AWS, Azure, and GCP choices default to local Floci endpoints and dummy/local credentials where applicable. Students can learn without a paid cloud account. Snowflake and Databricks connect to real accounts after the student configures authentication; no credentials are stored in this repository. Snowflake does not provide a supported local server, so “local Snowflake” here means a local client workspace connected to Snowflake Cloud.
 
-### What is in the basic `compose.yaml`?
+### Start your assigned course environment
 
-The basic Compose file creates one `dev` service. It:
+Complete Step 1 first. Run the commands below in **PowerShell on Windows** or **Terminal on macOS**, from the downloaded project folder containing `compose.yaml`. Use the same folder you used for installation. Do not paste Docker commands into Python or the browser address bar.
 
-- Builds [docker/Dockerfile](docker/Dockerfile), based on browser-hosted code-server.
-- Includes Python, the shared Python libraries, Node.js, npm, Git, and editor extensions.
-- Publishes code-server at <http://localhost:8080> by default.
-- Mounts this repository at `/home/coder/project`, so edits remain on the host.
-- Stores code-server application data in the `code_server_data` Docker volume.
-- Uses the classroom password `Tinitiate!23456` by default and restarts unless stopped.
-
-It does not start SQL Server, PostgreSQL, MySQL, Floci, or any other server. Use the on-premises database Compose file when database servers are needed.
-
-## Option 1: Install the desktop software
-
-### Windows
-
-For a new computer, create `C:\Code` and download the project into that folder. If Git is already installed, run:
-
-```powershell
-New-Item -ItemType Directory -Path C:\Code -Force
-Set-Location C:\Code
-git clone https://github.com/tinitiateprime/tinitiate-onboarding-installer.git
-Set-Location tinitiate-onboarding-installer
-```
-
-Then open **PowerShell as Administrator** and run:
-
-```powershell
-Set-Location C:\Code\tinitiate-onboarding-installer
-Set-ExecutionPolicy Bypass -Scope Process -Force
-& .\windows\install.ps1
-```
-
-Press **Enter after each line**. If using one line, separate the last two commands with a semicolon: `Set-ExecutionPolicy Bypass -Scope Process -Force; & .\windows\install.ps1`.
-
-The script is safe to run again. Restart Windows after it finishes, start Docker Desktop, and rerun the script if an installer requested a reboot.
-
-To run it directly from GitHub after this repository is published:
-
-```powershell
-iex (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/tinitiateprime/tinitiate-onboarding-installer/main/windows/install.ps1" -UseBasicParsing).Content
-```
-
-If Git is not installed or you are using Administrator Command Prompt, see the complete [Windows download, installation, and verification instructions](windows/README.md).
-
-### macOS
-
-From Terminal, change to this repository and run:
-
-```bash
-chmod +x macos/install.sh
-./macos/install.sh
-```
-
-See [macOS installation and verification](macos/README.md).
-
-## Option 2: Start a Docker development workspace
-
-Docker Compose provides Python, Node.js, common libraries, Git, and VS Code in the browser. Desktop applications still need the host installer above.
-
-1. Start Docker Desktop. No `.env` file is required for the classroom defaults.
-2. Choose one environment and build it from the repository root. For example, start AWS with:
+1. Start Docker Desktop and wait until its engine is running. Run `docker version` (look for both Client and Server information), then `docker compose version`. Resolve any errors before continuing. No `.env` file is required for the classroom defaults.
+2. Run **only the command for your selected environment**. For example, start AWS with:
 
 ```bash
 docker compose -f environments/aws/compose.yaml up -d --build
 ```
 
-Other choices:
+For another course, copy only its command below:
 
-```bash
+**Azure**
+
+```text
 docker compose -f environments/azure/compose.yaml up -d --build
+```
+
+**GCP**
+
+```text
 docker compose -f environments/gcp/compose.yaml up -d --build
+```
+
+**Snowflake**
+
+```text
 docker compose -f environments/snowflake/compose.yaml up -d --build
+```
+
+**Oracle Developer**
+
+```text
 docker compose -f environments/oracle-developer/compose.yaml up -d --build
+```
+
+**AI - AWS**
+
+```text
 docker compose -f environments/ai-aws/compose.yaml up -d --build
+```
+
+**AI - Azure**
+
+```text
 docker compose -f environments/ai-azure/compose.yaml up -d --build
+```
+
+**AI - Claude**
+
+```text
 docker compose -f environments/ai-claude/compose.yaml up -d --build
+```
+
+**AI - Custom**
+
+```text
 docker compose -f environments/ai-custom/compose.yaml up -d --build
+```
+
+**Databricks**
+
+```text
 docker compose -f environments/databricks/compose.yaml up -d --build
+```
+
+**dbt**
+
+```text
 docker compose -f environments/dbt/compose.yaml up -d --build
+```
+
+**On-premises databases**
+
+```text
 docker compose -f environments/onprem-db/compose.yaml up -d
 ```
 
-Use `docker compose up -d --build` without `-f` for the basic environment.
-
-3. Open <http://localhost:8080> and sign in with `Tinitiate!23456`. For AWS, Azure, and GCP, the Floci dashboard is at <http://localhost:4500>. AI appliances also expose MinIO at <http://localhost:9001>.
+3. Wait for the download/build to finish and the terminal prompt to return. The first run can take several minutes. Check status using the same Compose file, for example `docker compose -f environments/aws/compose.yaml ps`. Services should be running; wait for databases to become healthy. If the command reports an error, see [student troubleshooting](docs/STUDENT-GUIDE.md#troubleshooting).
+4. Open <http://localhost:8080> and sign in with `Tinitiate!23456`. For AWS, Azure, and GCP, the Floci dashboard is at <http://localhost:4500>. AI appliances also expose MinIO at <http://localhost:9001>. **On-premises databases has no browser workspace**: open DBeaver and follow its [connection instructions](environments/onprem-db/README.md).
 
 The classroom password is intended only for local student machines. Instructors can optionally copy `.env.example` to `.env` to override passwords, ports, regions, project IDs, and database settings.
 
-Only run one student environment at a time unless you assign different ports in `.env`.
+Only run one student environment at a time unless you assign different ports in `.env`. To switch courses, run the current environment's `down` command before starting the next one.
 
 Useful commands:
 
@@ -147,6 +184,8 @@ docker compose -f environments/aws/compose.yaml down
 ```
 
 Replace `aws` with the selected environment. Use `docker compose -f environments/aws/compose.yaml down -v` only when you intentionally want to delete that environment's editor, CLI configuration, and emulator data volumes.
+
+To resume later, start Docker Desktop and rerun your course's start command. Stopping with `down` keeps your saved files and database data. Do not add `-v`; that deletes saved Docker data.
 
 ### Verify the selected tools
 
@@ -197,4 +236,4 @@ Desktop VS Code uses [config/vscode-extensions.txt](config/vscode-extensions.txt
 - Docker Desktop requires hardware virtualization; on Windows it may also request WSL 2 features and a restart.
 - If `code` is not found immediately after installation, restart the terminal and rerun the installer.
 - On macOS, Python libraries are installed in `~/.tinitiate/venv`. Activate it with `source ~/.tinitiate/venv/bin/activate`.
-- Change all values marked `change-me` before using the Docker environment.
+- Classroom defaults work without editing `.env`; configure cloud credentials only when your course requires them.

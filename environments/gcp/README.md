@@ -1,5 +1,7 @@
 # GCP student Docker environment
 
+> **First time using Docker?** Complete Parts 2–6 of the illustrated [student guide](../../docs/STUDENT-GUIDE.md), then return here for GCP-specific exercises.
+
 This environment provides Google Cloud development tools and a local GCP-compatible emulator. It supports exercises that should run without a Google Cloud account, service-account key, or cloud charges.
 
 ## What is included

@@ -1,5 +1,7 @@
 # On-premises database Docker environment
 
+> **First time using Docker?** Complete Parts 2–5 of the illustrated [student guide](../../docs/STUDENT-GUIDE.md), then return here for DBeaver connection details.
+
 This Compose project starts the three databases used in the Tinitiate Windows database onboarding guides. It is a database-only stack: use the host-installed DBeaver application, the basic code-server workspace, or another database client to connect.
 
 ## What is included

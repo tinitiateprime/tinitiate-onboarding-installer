@@ -1,5 +1,7 @@
 # Azure student Docker environment
 
+> **First time using Docker?** Complete Parts 2–6 of the illustrated [student guide](../../docs/STUDENT-GUIDE.md), then return here for Azure-specific exercises.
+
 This environment provides Azure development tools together with a local Azure-compatible emulator. Students can practice supported Storage and Functions workflows without connecting to a paid Azure subscription.
 
 ## What is included

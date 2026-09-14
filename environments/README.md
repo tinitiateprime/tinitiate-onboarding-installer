@@ -1,5 +1,7 @@
 # Student environment catalog
 
+**Step 1:** [Install the base software](../README.md#step-1-install-the-base-software) on your computer. **Step 2:** start only the course environment assigned by your instructor. Docker Desktop runs the tools and databases for that course and sets up the included software automatically. If no course environment has been assigned yet, stop after Step 1. New students can follow the [illustrated setup guide](../docs/STUDENT-GUIDE.md).
+
 Each directory contains an independent Docker Compose choice. Run commands from the repository root so Compose reads the root `.env` file and mounts the repository as the student's project folder.
 
 | Environment guide | Workspace | Local emulator |
@@ -17,7 +19,7 @@ Each directory contains an independent Docker Compose choice. Run commands from 
 | [dbt](dbt/README.md) | dbt PostgreSQL, Snowflake, and Databricks adapters | PostgreSQL plus AWS and Azure Floci |
 | [On-premises databases](onprem-db/README.md) | SQL Server, PostgreSQL with pgvector, and MySQL | Local database servers |
 
-The standalone AWS, Azure, and GCP appliances expose the Floci UI on port 4500. Databricks and dbt use Floci as internal data-lake services without starting the UI. The workspace editor is on port 8080 and uses the classroom password `Tinitiate!23456` by default. No `.env` file is required; instructors can use one for optional overrides and cloud credentials.
+The standalone AWS, Azure, and GCP appliances expose the Floci UI on port 4500. Databricks and dbt use Floci as internal data-lake services without starting the UI. All choices except On-premises databases include a workspace editor on port 8080 with the classroom password `Tinitiate!23456` by default. For On-premises databases, open the desktop DBeaver application instead. No `.env` file is required for local classroom defaults; instructors can use one for optional overrides and cloud credentials.
 
 Start one choice:
 

@@ -1,5 +1,7 @@
 # Snowflake student Docker environment
 
+> **First time using Docker?** Complete Parts 2–6 of the illustrated [student guide](../../docs/STUDENT-GUIDE.md), then return here for Snowflake configuration.
+
 This environment provides a focused Snowflake workspace. Unlike the AWS, Azure, and GCP choices, it does not include a local Snowflake server emulator and requires access to a real Snowflake account for queries.
 
 ## What is included
