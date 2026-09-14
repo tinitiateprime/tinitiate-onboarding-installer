@@ -40,8 +40,7 @@ Open the **Start** menu, type **PowerShell**, right-click **Windows PowerShell**
 
 ```powershell
 Set-Location C:\Code\tinitiate-onboarding-installer
-Set-ExecutionPolicy Bypass -Scope Process -Force
-& .\windows\install.ps1
+Set-ExecutionPolicy Bypass -Scope Process -Force & .\windows\install.ps1
 ```
 
 This installs the base software on Windows, including Docker Desktop. No `docker compose` command is needed to complete the base software installation. After the restart and Docker Desktop setup, start a course environment only when you need it.
