@@ -4,7 +4,7 @@ This guide assumes you have never used PowerShell, Terminal, Git, Docker, or VS 
 
 ## The two setup steps
 
-**Step 1 — Install the base software once:** Docker Desktop, Notepad++ (Windows only), Visual Studio Code, DBeaver Community, Python and libraries, Node.js and npm, VS Code extensions, Git, and Zoom. The installer sets up its package manager automatically. You do not need Git or Python installed before downloading the project as a ZIP.
+**Step 1 — Install the base software once:** Docker Desktop, Notepad++ (Windows only), Visual Studio Code, DBeaver Community, Python and libraries, Java 21, IntelliJ IDEA, Node.js and npm, VS Code extensions, Git, Zoom, and Zoho Cliq. The installer sets up its package manager automatically. You do not need Git or Python installed before downloading the project as a ZIP.
 
 **Step 2 — Start the tools for your course:** your instructor will tell you which environment to use, such as AWS, Azure, Oracle, or AI. A course environment is a ready-made set of tools and databases that Docker Desktop runs for your class. See the [course list and account requirements](../README.md#step-2-choose-one-docker-course-environment). Start only the environment your instructor assigns. If none has been assigned yet, finish Part 1 and stop there until your instructor gives you the course name.
 
@@ -39,53 +39,19 @@ Do this part once on a new computer. If the software was already installed by yo
 
 ### Windows
 
-#### A. Download the project
-
-Download the project using your browser. Git does not need to be installed first.
-
-1. Open a web browser.
-2. Go to <https://github.com/tinitiateprime/tinitiate-onboarding-installer>.
-3. Select the green **Code** button.
-4. Select **Download ZIP**.
-5. Open **File Explorer**.
-6. Open **This PC** and then **Local Disk (C:)**.
-7. Create a folder named `Code`.
-8. Extract the downloaded ZIP into `C:\Code`.
-9. Rename the extracted folder to `tinitiate-onboarding-installer` if it has a different name.
-
-Confirm this file exists:
-
-```text
-C:\Code\tinitiate-onboarding-installer\windows\install.ps1
-```
-
-#### B. Run the Windows installer
-
-1. Close the current PowerShell window.
-2. Open the Windows **Start** menu.
-3. Type `PowerShell`.
-4. Right-click **Windows PowerShell** and select **Run as administrator**.
-5. Select **Yes** when Windows asks whether the app may make changes.
-6. Paste and run these commands one at a time:
+1. Open the Windows **Start** menu and type `PowerShell`.
+2. Right-click **Windows PowerShell** and select **Run as administrator**.
+3. Select **Yes** when prompted.
+4. Paste this single command and press **Enter**:
 
 ```powershell
-Set-Location C:\Code\tinitiate-onboarding-installer
+iex (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/tinitiateprime/tinitiate-onboarding-installer/main/windows/install.ps1" -UseBasicParsing).Content
 ```
 
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force
-```
+5. Wait until `Tinitiate student software installation is complete.` appears.
+6. Restart Windows.
 
-```powershell
-& .\windows\install.ps1
-```
-
-The installation can take several minutes. It installs or updates Docker Desktop, VS Code, Python, DBeaver, Notepad++, Git, Node.js, Zoom, Python libraries, and VS Code extensions.
-
-7. Wait until the message `Tinitiate student software installation is complete.` appears.
-8. Restart Windows.
-
-For download alternatives and verification commands, see the [complete Windows setup guide](../windows/README.md).
+This installs the basic tools, Python, Java, and their extensions automatically. See the [Windows verification commands](../windows/README.md#verify) to check the installation.
 
 ### macOS
 
@@ -150,6 +116,8 @@ Successful `docker version` output contains both **Client** and **Server** infor
 Every appliance command must be run from the repository root.
 
 ### Windows PowerShell
+
+For this course setup step, [download the project ZIP](https://github.com/tinitiateprime/tinitiate-onboarding-installer/archive/refs/heads/main.zip), extract it into `C:\Code`, and rename the extracted folder to `tinitiate-onboarding-installer`.
 
 Open **Start**, type `PowerShell`, open **Windows PowerShell**, and run:
 
@@ -288,7 +256,7 @@ The `STATUS` column should say `Up`, `running`, or `healthy`. A database may dis
 
 ## Part 6: open the browser workspace
 
-**On-premises databases students:** this choice starts SQL Server, PostgreSQL, and MySQL only. Skip the browser workspace and go to [Connect with DBeaver](#connect-with-dbeaver). All other choices include the browser workspace below.
+**On-premises databases students:** this choice starts SQL Server, PostgreSQL, and MySQL by default, with optional Oracle and DynamoDB Local in the [database guide](../environments/onprem-db/README.md). Skip the browser workspace and go to [Connect with DBeaver](#connect-with-dbeaver) for SQL databases. All other choices include the browser workspace below.
 
 1. Open Chrome, Edge, Firefox, or Safari.
 2. Select the address bar at the top of the browser.

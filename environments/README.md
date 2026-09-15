@@ -17,7 +17,7 @@ Each directory contains an independent Docker Compose choice. Run commands from 
 | [AI - Custom](ai-custom/README.md) | OpenAI-compatible SDK, CrewAI, and LangGraph | PostgreSQL/pgvector and MinIO |
 | [Databricks](databricks/README.md) | Databricks CLI, SDK, SQL connector, and Delta Lake | AWS and Azure Floci |
 | [dbt](dbt/README.md) | dbt PostgreSQL, Snowflake, and Databricks adapters | PostgreSQL plus AWS and Azure Floci |
-| [On-premises databases](onprem-db/README.md) | SQL Server, PostgreSQL with pgvector, and MySQL | Local database servers |
+| [On-premises databases](onprem-db/README.md) | SQL Server, PostgreSQL with pgvector, MySQL; optional Oracle and DynamoDB Local | Local database servers |
 
 The standalone AWS, Azure, and GCP appliances expose the Floci UI on port 4500. Databricks and dbt use Floci as internal data-lake services without starting the UI. All choices except On-premises databases include a workspace editor on port 8080 with the classroom password `Tinitiate!23456` by default. For On-premises databases, open the desktop DBeaver application instead. No `.env` file is required for local classroom defaults; instructors can use one for optional overrides and cloud credentials.
 

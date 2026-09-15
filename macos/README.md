@@ -2,18 +2,16 @@
 
 <p align="center">&copy; TINITIATE.COM</p>
 
-> If Terminal, folders, or Docker are new to you, follow the illustrated [student guide](../docs/STUDENT-GUIDE.md) from the beginning.
-
 ## Install
 
-From Terminal, change to this repository and run:
+Open **Terminal** and run:
 
 ```bash
-chmod +x macos/install.sh
-./macos/install.sh
+installer_file="$(mktemp)"
+curl -fsSL https://raw.githubusercontent.com/tinitiateprime/tinitiate-onboarding-installer/main/macos/install.sh -o "$installer_file" && bash "$installer_file"
 ```
 
-The installer configures Homebrew, Docker Desktop, Visual Studio Code, DBeaver Community, Python, Python libraries, Node.js, npm, Git, Zoom, and the standard VS Code extensions. Microsoft Teams is not included. Notepad++ is Windows-only, so Visual Studio Code is the primary editor on macOS.
+The installer configures Homebrew, Docker Desktop, Visual Studio Code, DBeaver Community, Python and libraries, Temurin JDK 21, IntelliJ IDEA, Node.js, npm, Git, Zoom, Zoho Cliq, and the common, Python, and Java VS Code extensions. Python and Java are included in this single basic installer; no separate language installer is needed. Notepad++ is Windows-only, so Visual Studio Code is the primary editor on macOS.
 
 Open Docker Desktop once after installation and complete its prompts.
 
@@ -30,6 +28,8 @@ source ~/.tinitiate/venv/bin/activate
 ```bash
 brew --version
 python3 --version
+java -version
+javac -version
 node --version
 npm --version
 git --version

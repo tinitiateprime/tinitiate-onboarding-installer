@@ -1,8 +1,8 @@
-# On-premises database Docker environment
+# On-premises database installer
 
 > **First time using Docker?** Complete Parts 2–5 of the illustrated [student guide](../../docs/STUDENT-GUIDE.md), then return here for DBeaver connection details.
 
-This Compose project starts the three databases used in the Tinitiate Windows database onboarding guides. It is a database-only stack: use the host-installed DBeaver application, the basic code-server workspace, or another database client to connect.
+Install and run your course databases locally using Docker Desktop on Windows or macOS. SQL Server, PostgreSQL, and MySQL start by default. Oracle and DynamoDB Local are optional. Use desktop DBeaver for SQL databases and a DynamoDB SDK or CLI for DynamoDB Local.
 
 ## What is included
 
@@ -11,6 +11,8 @@ This Compose project starts the three databases used in the Tinitiate Windows da
 | Microsoft SQL Server Developer | `mcr.microsoft.com/mssql/server:2022-latest` | `localhost` | 1433 | `master` / `sa` |
 | PostgreSQL with pgvector | `pgvector/pgvector:pg16` | `localhost` | 5432 | `tinitiate` / `tinitiate` |
 | MySQL LTS | `mysql:8.4` | `localhost` | 3306 | `tinitiate` / `tinitiate` |
+| Oracle Database Free (optional) | `gvenzl/oracle-free:23-slim-faststart` | `localhost` | 1521 | Service `FREEPDB1` / `tinitiate` |
+| DynamoDB Local (optional) | `amazon/dynamodb-local:latest` | `localhost` | 8500 | Local emulator; dummy AWS credentials |
 
 An initialization script embedded in the Compose YAML enables the `vector` extension automatically the first time the PostgreSQL data volume is created.
 
@@ -22,8 +24,9 @@ The repository-root `compose.yaml` contains only the browser development workspa
 
 1. Install and start Docker Desktop.
 2. Give Docker Desktop at least 6 GB of memory when running all three databases together. SQL Server is the largest service.
+3. SQL Server requires an x86-64 Docker host; on Apple Silicon, start PostgreSQL and MySQL using the selected-database command below. Allow additional memory if you also start Oracle.
 
-No `.env` file is required. The YAML includes the classroom password `Tinitiate!23456` for all three databases. These credentials are intended only for local student machines and must never be used for production or internet-accessible databases.
+No `.env` file is required. The YAML includes the classroom password `Tinitiate!23456` for the SQL databases. Ports bind to `127.0.0.1` so the databases are accessible only from this computer. These credentials are intended only for local student machines and must never be used for production or internet-accessible databases.
 
 Instructors can optionally override passwords, ports, database names, users, and timezone through a `.env` file. SQL Server password overrides must contain uppercase and lowercase letters, a number, and a symbol.
 
@@ -95,7 +98,40 @@ Start two databases:
 docker compose -f environments/onprem-db/compose.yaml up -d postgres mysql
 ```
 
-Valid service names are `mssql`, `postgres`, and `mysql`.
+Start Oracle only:
+
+```bash
+docker compose -f environments/onprem-db/compose.yaml up -d oracle
+```
+
+Start DynamoDB Local only (also runs its volume-permissions initialization):
+
+```bash
+docker compose -f environments/onprem-db/compose.yaml up -d dynamodb
+```
+
+Start all five databases:
+
+```bash
+docker compose -f environments/onprem-db/compose.yaml --profile oracle --profile dynamodb up -d
+```
+
+Valid database service names are `mssql`, `postgres`, `mysql`, `oracle`, and `dynamodb`. Selecting an optional service explicitly enables it for that command. DynamoDB shows `running`; its one-time `dynamodb-init` helper should exit with code 0. The SQL services should become `healthy`.
+
+### Oracle connection
+
+In DBeaver select **Oracle**, host `localhost`, port `1521`, connection type **Service name**, service `FREEPDB1`, user `tinitiate`, and password `Tinitiate!23456`. The `ORACLE_*` values in `.env` override these defaults. Do not run this Oracle service and the Oracle Developer course environment together on the same port.
+
+### Verify DynamoDB Local
+
+From the project folder, run this using the Python installed by the basic installer (on macOS, activate `~/.tinitiate/venv` first):
+
+```bash
+python -m pip install boto3
+python -c "import boto3; db = boto3.client('dynamodb', endpoint_url='http://localhost:8500', region_name='us-east-1', aws_access_key_id='test', aws_secret_access_key='test'); print(db.list_tables()['TableNames'])"
+```
+
+An empty list `[]` is successful before creating tables. Change the endpoint port if you set `DYNAMODB_PORT`. DynamoDB Local is an AWS emulator running on your computer; it needs no AWS account and is not a production on-premises database server.
 
 ## Useful commands
 
@@ -103,7 +139,7 @@ Valid service names are `mssql`, `postgres`, and `mysql`.
 docker compose -f environments/onprem-db/compose.yaml logs -f
 docker compose -f environments/onprem-db/compose.yaml restart postgres
 docker compose -f environments/onprem-db/compose.yaml stop
-docker compose -f environments/onprem-db/compose.yaml down
+docker compose -f environments/onprem-db/compose.yaml --profile oracle --profile dynamodb down
 ```
 
 `down` removes the containers and network but preserves database data in named volumes. Use `down -v` only when you intentionally want to permanently delete every database and backup volume in this stack.
@@ -115,9 +151,3 @@ docker compose -f environments/onprem-db/compose.yaml down
 - If SQL Server stops during startup, verify its password complexity and increase Docker Desktop memory.
 - PostgreSQL initialization scripts run only on a new empty volume. To add pgvector to an existing database, execute `CREATE EXTENSION IF NOT EXISTS vector;` manually.
 - SQL Server containers require an x86-64 compatible Docker environment. This can limit use on ARM-based computers.
-
-## Related onboarding guides
-
-- [Tinitiate SQL Server installer guide](https://github.com/tinitiateprime/tinitiate-onboarding/blob/main/software-installers/windows/database-installers/ms-sql-server/README.md)
-- [Tinitiate PostgreSQL installer guide](https://github.com/tinitiateprime/tinitiate-onboarding/blob/main/software-installers/windows/database-installers/postgresql/README.md)
-- [Tinitiate MySQL installer guide](https://github.com/tinitiateprime/tinitiate-onboarding/blob/main/software-installers/windows/database-installers/mysql/README.md)

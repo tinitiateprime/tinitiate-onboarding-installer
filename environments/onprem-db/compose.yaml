@@ -10,7 +10,7 @@ services:
       MSSQL_PID: Developer
       TZ: ${DATABASE_TIMEZONE:-America/Chicago}
     ports:
-      - "${MSSQL_PORT:-1433}:1433"
+      - "127.0.0.1:${MSSQL_PORT:-1433}:1433"
     volumes:
       - mssql_data:/var/opt/mssql
       - mssql_backup:/var/opt/mssql/backup
@@ -41,7 +41,7 @@ services:
       - -c
       - max_connections=200
     ports:
-      - "${POSTGRES_PORT:-5432}:5432"
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     configs:
@@ -63,7 +63,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:-Tinitiate!23456}
       TZ: ${DATABASE_TIMEZONE:-America/Chicago}
     ports:
-      - "${MYSQL_PORT:-3306}:3306"
+      - "127.0.0.1:${MYSQL_PORT:-3306}:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
@@ -74,11 +74,57 @@ services:
       start_period: 20s
     restart: unless-stopped
 
+  oracle:
+    profiles: [oracle]
+    image: gvenzl/oracle-free:23-slim-faststart
+    environment:
+      ORACLE_PASSWORD: ${ORACLE_ADMIN_PASSWORD:-Tinitiate!23456}
+      APP_USER: ${ORACLE_APP_USER:-tinitiate}
+      APP_USER_PASSWORD: ${ORACLE_APP_PASSWORD:-Tinitiate!23456}
+    ports:
+      - "127.0.0.1:${ORACLE_PORT:-1521}:1521"
+    volumes:
+      - oracle_data:/opt/oracle/oradata
+    healthcheck:
+      test: ["CMD", "healthcheck.sh"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 60s
+    restart: unless-stopped
+
+  dynamodb:
+    profiles: [dynamodb]
+    image: amazon/dynamodb-local:latest
+    # Initialize permissions on the named volume before starting as the image's user.
+    depends_on:
+      dynamodb-init:
+        condition: service_completed_successfully
+    command: ["-jar", "DynamoDBLocal.jar", "-sharedDb", "-dbPath", "./data"]
+    working_dir: /home/dynamodblocal
+    ports:
+      - "127.0.0.1:${DYNAMODB_PORT:-8500}:8000"
+    volumes:
+      - dynamodb_data:/home/dynamodblocal/data
+    restart: unless-stopped
+
+  dynamodb-init:
+    profiles: [dynamodb]
+    image: amazon/dynamodb-local:latest
+    user: "0:0"
+    entrypoint: ["/bin/sh", "-c"]
+    command: ["chown dynamodblocal:dynamodblocal /home/dynamodblocal/data"]
+    volumes:
+      - dynamodb_data:/home/dynamodblocal/data
+    restart: "no"
+
 volumes:
   mssql_data:
   mssql_backup:
   postgres_data:
   mysql_data:
+  oracle_data:
+  dynamodb_data:
 
 configs:
   postgres_init:

@@ -2,98 +2,17 @@
 
 <p align="center">&copy; TINITIATE.COM</p>
 
-> If PowerShell, folders, or Docker are new to you, follow the illustrated [student guide](../docs/STUDENT-GUIDE.md) from the beginning.
+## Install basic software (Python + Java)
 
-![Open PowerShell, open the project folder, and run the command](../docs/images/01-open-powershell-and-run-command.png)
-
-## Download the installer to `C:\Code`
-
-### Method 1: Download the ZIP file
-
-Use this method when Git is not installed yet.
-
-1. Open File Explorer and select **This PC** > **Local Disk (C:)**.
-2. Create a folder named `Code` so the full path is `C:\Code`.
-3. Open <https://github.com/tinitiateprime/tinitiate-onboarding-installer> in a browser.
-4. Select **Code** > **Download ZIP**.
-5. Extract the ZIP file into `C:\Code`.
-6. Rename the extracted folder to `tinitiate-onboarding-installer` if necessary.
-
-The installer must now be located at:
-
-```text
-C:\Code\tinitiate-onboarding-installer\windows\install.ps1
-```
-
-### Method 2: Clone with Git
-
-Use this method when Git is already installed. Open Command Prompt and run:
-
-```cmd
-mkdir C:\Code
-cd /d C:\Code
-git clone https://github.com/tinitiateprime/tinitiate-onboarding-installer.git
-cd tinitiate-onboarding-installer
-```
-
-## Install from Administrator Command Prompt
-
-1. Open the Start menu and search for **Command Prompt**.
-2. Right-click **Command Prompt** and select **Run as administrator**.
-3. Run these commands:
-
-```cmd
-cd /d C:\Code\tinitiate-onboarding-installer
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\windows\install.ps1"
-```
-
-The first command opens the installer folder:
-
-![Change to the installer folder in Command Prompt](../images/setexecution-force.png)
-
-The second command starts the installer:
-
-![Run the Windows installer from Command Prompt](../images/windows_install.png)
-
-Wait while the installer downloads and installs the software:
-
-![Windows installer installing Docker Desktop through Chocolatey](../images/windows_install_1.png)
-
-Do not enter `Set-ExecutionPolicy` directly in Command Prompt. It is a PowerShell command.
-
-## Install from Administrator PowerShell
-
-1. Open the Start menu and search for **PowerShell**.
-2. Right-click PowerShell and select **Run as administrator**.
-3. Run these commands:
+Open **PowerShell as administrator**, paste this single command, and press **Enter**:
 
 ```powershell
-Set-Location C:\Code\tinitiate-onboarding-installer
-Set-ExecutionPolicy Bypass -Scope Process -Force
-& .\windows\install.ps1
+iex (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/tinitiateprime/tinitiate-onboarding-installer/main/windows/install.ps1" -UseBasicParsing).Content
 ```
 
-![Set the installer folder in PowerShell](../images/setlocation.png)
+This installs Docker Desktop, Notepad++, VS Code, DBeaver, Python and libraries, Java 21, IntelliJ IDEA, Node.js and npm, Git, Zoom, Zoho Cliq, and the common, Python, and Java VS Code extensions.
 
-Press **Enter after each line**. Do not place `&` between `Set-ExecutionPolicy` and the installer command.
-
-To run the last two commands on one line, separate them with a semicolon:
-
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; & .\windows\install.ps1
-```
-
-PowerShell prompts start with `PS`, such as `PS C:\Code>`.
-
-The installer configures Chocolatey, Docker Desktop, Notepad++, Visual Studio Code, DBeaver Community, Python, Python libraries, Node.js, npm, Git, Zoom, and the standard VS Code extensions. Microsoft Teams is not included.
-
-Restart Windows when the installer finishes. Open Docker Desktop once and complete any WSL 2 or license prompts it displays.
-
-![Windows installer reports that installation is complete](../images/installation%20complete.png)
-
-Docker Desktop may show an empty container list before you start a course environment:
-
-![Docker Desktop before starting a course environment](../images/Docker.png)
+Wait for **installation is complete**, then restart Windows. Open Docker Desktop and complete its setup prompts.
 
 ## Verify
 
@@ -102,6 +21,8 @@ Open a new PowerShell window and run:
 ```powershell
 choco --version
 python --version
+java -version
+javac -version
 python -m pip --version
 node --version
 npm --version

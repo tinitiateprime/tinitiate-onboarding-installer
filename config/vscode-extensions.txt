@@ -6,3 +6,12 @@ eamodio.gitlens
 mtxr.sqltools
 esbenp.prettier-vscode
 dbaeumer.vscode-eslint
+alefragnani.project-manager
+bierner.markdown-preview-github-styles
+evilz.vscode-reveal
+gera2ld.markmap-vscode
+marp-team.marp-vscode
+ms-vscode.notepadplusplus-keybindings
+qcz.text-power-tools
+ms-vscode.live-server
+vscjava.vscode-java-pack

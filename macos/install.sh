@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Tinitiate basic installer: common tools, Python, and Java.
 set -euo pipefail
 
 step() {
@@ -25,14 +26,33 @@ step "Updating Homebrew"
 brew update
 
 step "Installing command-line development tools"
-brew install git python node
+for formula in git python node; do
+  if ! brew list --formula "$formula" >/dev/null 2>&1; then
+    brew install "$formula"
+  fi
+done
 
 step "Installing desktop applications"
-for application in docker visual-studio-code dbeaver-community zoom; do
+for application in docker visual-studio-code dbeaver-community zoom zoho-cliq temurin@21 intellij-idea; do
   if brew list --cask "$application" >/dev/null 2>&1; then
-    brew upgrade --cask "$application" || printf '%s is already current or could not be upgraded.\n' "$application"
+    printf '%s is already installed.\n' "$application"
   else
     brew install --cask "$application"
+  fi
+done
+
+step "Configuring Java 21"
+JAVA_HOME="$(/usr/libexec/java_home -v 21)"
+export JAVA_HOME
+export PATH="$JAVA_HOME/bin:$PATH"
+"$JAVA_HOME/bin/javac" -version
+# Configure new login shells without repeatedly appending the same settings.
+java_profile="${HOME}/.zprofile"
+java_setting='export JAVA_HOME="$(/usr/libexec/java_home -v 21)"'
+java_path_setting='export PATH="$JAVA_HOME/bin:$PATH"'
+for setting in "$java_setting" "$java_path_setting"; do
+  if ! grep -Fqx "$setting" "$java_profile" 2>/dev/null; then
+    printf '\n%s\n' "$setting" >> "$java_profile"
   fi
 done
 
@@ -68,9 +88,10 @@ if [[ -n "$code_command" ]]; then
   done < "$extensions_file"
 else
   echo "VS Code was installed, but its command-line launcher was not found. Rerun this script after opening VS Code." >&2
+  exit 1
 fi
 
 printf '\nTinitiate student software installation is complete.\n'
 printf 'Start Docker Desktop and see macos/README.md for verification.\n'
 printf 'Activate Python with: source ~/.tinitiate/venv/bin/activate\n'
-printf 'Microsoft Teams was not installed.\n'
+printf 'Basic tools, Python, Java 21, IntelliJ IDEA, and Zoho Cliq are installed.\n'
